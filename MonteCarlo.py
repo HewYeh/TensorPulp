@@ -1,7 +1,7 @@
 from scipy import stats
 import numpy as numpy
 
-def T_TestMonteCarloSampleSize(alpha: float = .05, power: float= .80, cohens_d: float= 0, iterations = 1000) -> str:
+def T_TestMonteCarloSampleSize(alpha: float = .05, power: float= .80, cohens_d: float= None, iterations = 1000) -> str:
 
     '''
     Given an alpha level, desried power level, and Cohen's d, this function uses Monte Carlo simulation to iteratively
@@ -37,7 +37,7 @@ def T_TestMonteCarloSampleSize(alpha: float = .05, power: float= .80, cohens_d: 
         else:
             n +=1
 
-def T_TestMonteCarloAchievedPower(alpha: float = .05, cohens_d: float= 0, iterations = 1000, total_N = 0):
+def T_TestMonteCarloAchievedPower(alpha: float = .05, cohens_d: float= None, iterations = 1000, total_N : int = None):
     '''Given an alpha level, Cohen's d, and the total_N of your study, this function calculates the achieved power.'''
 
     n = int(total_N/2)
