@@ -55,3 +55,28 @@ def T_TestMonteCarloAchievedPower(alpha: float = .05, cohens_d: float= None, ite
     # Power would be the proportion of t-tests that were sig.
     AchievedPower = SignificanceCounts/iterations
     return f'{AchievedPower*100}%'
+
+def SimulatedMinimumEffectSize(alpha: float = .05, power: float = .80, SampleSize:int = None, Iterations : int = 1000) -> float:
+    '''
+    Given a certain sig/power level and a sample size, this will determine the smallest effect
+    size you can detect while maintaining the desired power.
+    '''
+    
+    CohensD = .50
+    SignficanceCounter = 0
+    
+    while True:
+        for i in range(Iterations):
+            Tensor1 = numpy.random.normal(0, 1, int(SampleSize/2))
+            Tensor2 = numpy.random.normal(CohensD, 1, int(SampleSize/2))
+            TestStatistic = stats.ttest_ind(Tensor1, Tensor2, equal_var=True)
+
+            if TestStatistic.pvalue < alpha:
+                SignficanceCounter += 1
+
+        AchievedPower = SignficanceCounter/Iterations
+        if AchievedPower >= power:
+            return CohensD
+        else:
+            CohensD +=.01
+            SignficanceCounter = 0
